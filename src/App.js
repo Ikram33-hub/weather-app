@@ -7,34 +7,30 @@ function App() {
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState("");
 
-  const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
+  // بيانات ثابتة للـ demo
+  const demoWeather = {
+    name: "Casablanca",
+    temp: 25,
+    humidity: 60,
+    condition: "Sunny",
+    icon: "https://cdn.weatherapi.com/weather/64x64/day/113.png",
+  };
 
-  const handleSearch = async (city) => {
-    try {
+  const handleSearch = (city) => {
+    if (city.trim().toLowerCase() === "casablanca") {
+      setWeather(demoWeather);
       setError("");
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
-      );
-
-      const data = await response.json();
-
-      if (data.cod !== 200) {
-        setWeather(null);
-        setError("City not found ❌");
-        return;
-      }
-
-      setWeather(data);
-    } catch (err) {
-      setError("Something went wrong ⚠️");
+    } else {
+      setWeather(null);
+      setError("City not found");
     }
   };
 
   return (
     <div className="App">
-      <h1>🌤️ Weather App</h1>
+      <h1>🌤️ Weather App (Demo)</h1>
       <SearchBar onSearch={handleSearch} />
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
       <WeatherDisplay weather={weather} />
     </div>
   );
